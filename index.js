@@ -49,18 +49,9 @@ app.get("/surah/:surahId/verse/:verseId/:lang", async(req, res) => {
 
 app.get("/search/:search/:lang", async(req, res) => {
     const { search, lang } = req.params;
-    try {
-        if(search.length >= 3){
-            if(search !== ""){
-                const response = await axios.get(`https://alquran-api.pages.dev/api/quran/search?q=${search}&lang=${lang}`);
-                res.json(response.data);
-            }
-            else{
-                res.status(500).json({ message: lang === "bn" ? `${search} এর জন্য কোন ফলাফল পাওয়া যায়নি` : `No result found for ${search}`, error: error.message });
-            }
-        }
-    } catch (error) {
-        res.status(500).json({ message: lang === "bn" ? `Search query অবশ্যই কমপক্ষে ৩ অক্ষরের হতে হবে` : `Search query must be at least 3 characters`, error: error.message });
+    if(search.length >= 3){
+        const response = await axios.get(`https://alquran-api.pages.dev/api/quran/search?q=${search}&lang=${lang}`);
+        res.json(response.data);
     }
 });
 
